@@ -70,7 +70,7 @@ train1=scaler.fit_transform(train)
 
 
 #Loading model
-model=load_model('/Users/vedantpadole/Desktop/Stock_market/Stock-Predictions/keras_model.h5')
+model=load_model('keras_model.h5')
 
 #Predictions
 prev100=train
