@@ -11,12 +11,33 @@ from fbprophet.plot import plot_plotly
 
 import streamlit as st
 
-start='1980-01-01'
-end=date.today().strftime("%Y-%m-%d")
+# start='1980-01-01'
+# end=date.today().strftime("%Y-%m-%d")
+
+# st.title('*STOCKSIM PREDICTIONS*')
+# user_input=st.text_input('Enter the Stock Ticker','TSLA')
+# df=data.DataReader(user_input,'yahoo',start,end)
+start = '1980-01-01'
+end = date.today().strftime("%Y-%m-%d")
 
 st.title('*STOCKSIM PREDICTIONS*')
-user_input=st.text_input('Enter the Stock Ticker','TSLA')
-df=data.DataReader(user_input,'yahoo',start,end)
+user_input = st.text_input('Enter the Stock Ticker', 'TSLA')
+
+try:
+    df = yf.download(user_input, start=start, end=end)
+    st.subheader('Current data')
+    st.write(df.tail(5))
+    st.subheader('Overview')
+    st.write(df.describe())
+except Exception as e:
+    st.error(f"Error occurred: {e}")
+
+st.subheader('Current Intra-day data')
+try:
+    test = yf.download(tickers=user_input, period='5d', interval='5m')
+    st.write(test.tail(5))
+except Exception as e:
+    st.error(f"Error occurred: {e}")
 st.subheader('Current data')
 st.write(df.tail(5))
 st.subheader('Overview')
@@ -49,7 +70,7 @@ train1=scaler.fit_transform(train)
 
 
 #Loading model
-model=load_model('/Users/vedantpadole/Desktop/Stock_predictions/Stock-Predictions/keras_model.h5')
+model=load_model('/Users/vedantpadole/Desktop/Stock_market/Stock-Predictions/keras_model.h5')
 
 #Predictions
 prev100=train
